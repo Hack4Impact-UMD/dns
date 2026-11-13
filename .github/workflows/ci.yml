@@ -1,0 +1,97 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-dnscontrol
+
+      - name: dnscontrol check
+        run: dnscontrol check
+
+  preview:
+    needs: check
+    # Secrets aren't available to PRs from forks, so only preview same-repo PRs.
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    concurrency:
+      group: dnscontrol-preview-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: ./.github/actions/setup-dnscontrol
+
+      - name: dnscontrol preview
+        id: preview
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          dnscontrol --no-colors preview --no-populate 2>&1 | tee preview.txt
+
+      - name: Comment preview on PR
+        uses: actions/github-script@v7
+        env:
+          PREVIEW_OUTCOME: ${{ steps.preview.outcome }}
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- dnscontrol-preview -->';
+            const max = 60000;
+            let out = fs.readFileSync('preview.txt', 'utf8');
+            if (out.length > max) {
+              out = '…(truncated, see workflow logs for full output)\n' + out.slice(-max);
+            }
+            const ok = process.env.PREVIEW_OUTCOME === 'success';
+            const changes = (out.match(/^#\d+: /gm) || []).length;
+            const summary = !ok ? 'Preview failed'
+              : changes === 0 ? 'No changes'
+              : `${changes} change${changes === 1 ? '' : 's'}`;
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = [
+              marker,
+              `### DNSControl preview ${ok ? '✅' : '❌'}`,
+              `**${summary}**`,
+              '',
+              '<details><summary>Show output</summary>',
+              '',
+              '```',
+              out.trim(),
+              '```',
+              '',
+              '</details>',
+              '',
+              `_Commit ${context.payload.pull_request.head.sha.slice(0, 7)} · [workflow run](${runUrl})_`,
+            ].join('\n');
+
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
+            const existing = comments.find(c => c.user.type === 'Bot' && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
+
+      - name: Fail if preview failed
+        if: steps.preview.outcome == 'failure'
+        run: exit 1

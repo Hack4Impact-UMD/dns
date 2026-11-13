@@ -1,0 +1,2 @@
+# creds.json is committed: it only references env vars, never literal secrets.
+.env

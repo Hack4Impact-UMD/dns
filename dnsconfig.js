@@ -22,10 +22,7 @@ D("umdh4i.org", REG_NONE, DnsProvider(DSP_CLOUDFLARE),
   A("@", "192.0.2.1", CF_PROXY_ON),
 
   // docs
-  A("docs", "185.199.108.153"),
-  A("docs", "185.199.109.153"),
-  A("docs", "185.199.110.153"),
-  A("docs", "185.199.111.153"),
+  CNAME("docs", "hack4impact-umd.github.io."),
 
   // bedrock
   // ACM DNS validation for bedrock.umdh4i.org.

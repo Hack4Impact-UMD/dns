@@ -21,6 +21,16 @@ D("umdh4i.org", REG_NONE, DnsProvider(DSP_CLOUDFLARE),
   // proxy receives requests and applies the redirect below. Must stay proxied.
   A("@", "192.0.2.1", CF_PROXY_ON),
 
+  // docs
+  A("docs", "185.199.108.153"),
+  A("docs", "185.199.109.153"),
+  A("docs", "185.199.110.153"),
+  A("docs", "185.199.111.153"),
+
+  // bedrock
+  // ACM DNS validation for bedrock.umdh4i.org.
+  CNAME("_cd603414f7f27bcfb43cdfc5043d737d.bedrock", "_4f1c978109b7f45e73998e64ebb3ac22.wzccmgtwzk.acm-validations.aws."),
+
   // https://umdh4i.org/* -> https://umd.hack4impact.org/*
   // Mirrors the rule originally created in the dashboard. The name is how
   // DNSControl matches the rule in Cloudflare; renaming it deletes and

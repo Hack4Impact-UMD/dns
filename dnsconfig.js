@@ -30,7 +30,7 @@ D("umdh4i.org", REG_NONE, DnsProvider(DSP_CLOUDFLARE),
   CNAME("bedrock", "d-29limmalw0.execute-api.us-east-2.amazonaws.com."),
 
   // pixels
-  CNAME("pixels", "umd-pixels.web.app"),
+  CNAME("pixels", "umd-pixels.web.app."),
 
   // https://umdh4i.org/* -> https://umd.hack4impact.org/*
   // Mirrors the rule originally created in the dashboard. The name is how

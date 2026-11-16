@@ -12,3 +12,4 @@ The following subdomains are currently configured:
 * `docs.umdh4i.org`: Engineering documentation site <https://github.com/Hack4Impact-UMD/docs>
 * `bedrock.umdh4i.org`: Bedrock internal API <https://github.com/Hack4Impact-UMD/bedrock>
 * `pixels.umdh4i.org`: Pixels site <https://github.com/Hack4Impact-UMD/umd-pixel-redesign>
+* `hagar.umdh4i.org`: Hagar Project Live Site <https://github.com/Hack4Impact-UMD/hagar>

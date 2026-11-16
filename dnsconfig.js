@@ -32,6 +32,11 @@ D("umdh4i.org", REG_NONE, DnsProvider(DSP_CLOUDFLARE),
   // pixels
   CNAME("pixels", "umd-pixels.web.app."),
 
+  // hagar
+  // (live site! communicate with npo before changing)
+  CNAME("hagar", "hagar-intl.web.app."),
+
+
   // https://umdh4i.org/* -> https://umd.hack4impact.org/*
   // Mirrors the rule originally created in the dashboard. The name is how
   // DNSControl matches the rule in Cloudflare; renaming it deletes and

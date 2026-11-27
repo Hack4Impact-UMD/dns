@@ -10,6 +10,7 @@ This repo contains Cloudflare DNS configuration for <https://umdh4i.org> managed
 * `docs.umdh4i.org`: Engineering documentation site <https://github.com/Hack4Impact-UMD/docs>
 * `bedrock.umdh4i.org`: Bedrock internal API <https://github.com/Hack4Impact-UMD/bedrock>
 * `pixels.umdh4i.org`: Pixels site <https://github.com/Hack4Impact-UMD/umd-pixel-redesign>
+* `mail.umdh4i.org`: Bedrock's shared domain for sending email
 
 ## Project Subdomains
 

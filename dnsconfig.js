@@ -29,6 +29,17 @@ D("umdh4i.org", REG_NONE, DnsProvider(DSP_CLOUDFLARE),
   CNAME("_cd603414f7f27bcfb43cdfc5043d737d.bedrock", "_4f1c978109b7f45e73998e64ebb3ac22.wzccmgtwzk.acm-validations.aws."),
   CNAME("bedrock", "d-29limmalw0.execute-api.us-east-2.amazonaws.com."),
 
+  // bedrock mail (Amazon SES sending domain mail.umdh4i.org)
+  // Easy DKIM
+  CNAME("hivezjp55bvdcatjswkyuwvvl4pimi4q._domainkey.mail", "hivezjp55bvdcatjswkyuwvvl4pimi4q.dkim.amazonses.com."),
+  CNAME("bxtlivffyzffp5wolr5hnsjwyfesevbw._domainkey.mail", "bxtlivffyzffp5wolr5hnsjwyfesevbw.dkim.amazonses.com."),
+  CNAME("m4my7xb5jgsikdioykcdr72aj7pw3mos._domainkey.mail", "m4my7xb5jgsikdioykcdr72aj7pw3mos.dkim.amazonses.com."),
+  // Custom MAIL FROM domain
+  MX("bounce.mail", 10, "feedback-smtp.us-east-2.amazonses.com."),
+  TXT("bounce.mail", "v=spf1 include:amazonses.com ~all"),
+  // DMARC
+  TXT("_dmarc.mail", "v=DMARC1; p=none;"),
+
   // pixels
   CNAME("pixels", "umd-pixels.web.app."),
 
